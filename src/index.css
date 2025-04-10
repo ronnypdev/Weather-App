@@ -16,3 +16,9 @@
 body {
   color: var(--color-pale-white);
 }
+
+.current-weather-conditions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 1rem 0;
+}
