@@ -5,7 +5,7 @@
 
 @theme {
   --color-matte-black: #1a1c1e;
-  --color-pale-white: #f1f1f1;
+  --color-pale-white: #f2f2f2;
   --color-solid-black: #1f2327;
   --color-mid-gray: #7c7e80;
 
@@ -17,8 +17,21 @@ body {
   color: var(--color-pale-white);
 }
 
+.weather-app {
+  box-shadow: 5px 10px 20px #00000064;
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
 .current-weather-conditions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 1rem 0;
+}
+
+.weekly-forecast {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+  overflow-x: scroll;
 }

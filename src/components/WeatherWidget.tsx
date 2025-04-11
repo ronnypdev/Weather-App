@@ -1,10 +1,10 @@
-import { Umbrella, CloudHail, Wind, CloudRain, CloudSnow, Snowflake, Search } from "lucide-react";
+import { Umbrella, CloudHail, Sun, CloudRain, CloudSnow, Snowflake, Search } from "lucide-react";
 import WindIcon from "./icons/WindIcon";
 import HumidityIcon from "./icons/HumidityIcon";
 
 export default function WeatherWidget() {
   return (
-    <div className="w-[448px] h-[562px] bg-matte-black rounded-[15px] mx-auto p-11">
+    <div className="weather-app max-w-[28rem] w-full bg-matte-black rounded-[15px] relative">
       <header className="flex justify-between items-center">
         <div className="city-info">
           <h1 className="font-teko font-bold text-[2em] tracking-[1px]">London</h1>
@@ -27,10 +27,61 @@ export default function WeatherWidget() {
           <span className="wind-speed">63%</span>
           <p className="font-montserrat text-[1em] text-mid-gray">Humidity</p>
         </div>
-        <div className="flex  flex-col justify-between items-center gap-[0.5rem]">
+        <div className="flex flex-col justify-between items-center gap-[0.5rem]">
           <Umbrella className="w-6 h-6"/>
           <span className="wind-speed">0%</span>
           <p className="font-montserrat text-[1em] text-mid-gray">Precipitation</p>
+        </div>
+      </div>
+      <div className="weekly-forecast">
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Mon</p>
+          <WindIcon size="w-8 h-8" />
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">5&deg;</span> | <span day-temp-max="">10&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Tue</p>
+          <CloudSnow className="w-8 h-8"/>
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">6&deg;</span> | <span day-temp-max="">13&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Wed</p>
+          <WindIcon size="w-8 h-8" />
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">7&deg;</span> | <span day-temp-max="">11&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Thu</p>
+          <CloudRain className="w-8 h-8"/>
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">8&deg;</span> | <span day-temp-max="">12&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Fri</p>
+          <Sun className="w-8 h-8"/>
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">3&deg;</span> | <span day-temp-max="">9&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Sat</p>
+          <Snowflake className="w-8 h-8"/>
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">4&deg;</span> | <span day-temp-max="">10&deg;</span>
+          </div>
+        </div>
+        <div className="data flex flex-col items-center gap-[0.5rem]">
+          <p className="font-montserrat text-[1em]">Sun</p>
+          <CloudHail className="w-8 h-8"/>
+          <div className="flex gap-[0.15rem] pb-[1rem]">
+            <span day-temp-min="">7&deg;</span> | <span day-temp-max="">11&deg;</span>
+          </div>
         </div>
       </div>
     </div>
