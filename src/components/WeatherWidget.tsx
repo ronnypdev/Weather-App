@@ -25,9 +25,18 @@ interface weatherProps {
   currentWeather: weatherObj;
   weeklyForecast?: [];
   currentDate: number | string;
+  cityNameInput: string;
+  cityNameSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  cityNameSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default function WeatherWidget({currentWeather, weeklyForecast, currentDate} : weatherProps) {
+export default function WeatherWidget({
+  currentWeather,
+  weeklyForecast,
+  currentDate,
+  cityNameInput,
+  cityNameSearch,
+  cityNameSubmit }: weatherProps) {
   return (
     <>
       <div className="weather-app max-w-[28rem] w-full bg-matte-black rounded-[15px] relative">
@@ -123,10 +132,10 @@ export default function WeatherWidget({currentWeather, weeklyForecast, currentDa
           <h3 className="font-teko font-bold text-lg text-pale-white">Hello!</h3>
           <p className="text-mid-gray">Enter the Name or City you want to search for!</p>
           <div className="modal-action">
-            <form className="w-full" method="dialog">
+            <form className="w-full" method="dialog" onSubmit={cityNameSubmit}>
               {/* if there is a button in form, it will close the modal */}
               <label htmlFor="city"></label>
-              <input type="search" id="city" className="input text-matte-black" />
+              <input className="input text-matte-black" id="city" type="search" value={cityNameInput} onChange={cityNameSearch}/>
               <button className="btn ml-1.5">Submit</button>
             </form>
           </div>
