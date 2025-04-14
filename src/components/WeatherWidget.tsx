@@ -2,8 +2,20 @@ import { Umbrella, Search } from "lucide-react";
 import WindIcon from "./icons/WindIcon";
 import HumidityIcon from "./icons/HumidityIcon";
 
+interface ForecastItem {
+  dt_txt: string;
+  main: {
+    temp: number;
+    temp_min: number;
+    temp_max: number;
+  };
+  weather: {
+    icon: string;
+  }[];
+}
+
 type weatherObj = {
-  weather: [];
+  weather: { icon: string }[];
   main: {
     temp: number;
     temp_min: number;
@@ -22,8 +34,8 @@ type weatherObj = {
 }
 
 interface weatherProps {
-  currentWeather: weatherObj;
-  weeklyForecast?: [];
+  currentWeather: weatherObj | null;
+  weeklyForecast: ForecastItem[] | null;
   currentDate: number | string;
   cityNameInput: string;
   cityNameSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -48,83 +60,37 @@ export default function WeatherWidget({
           <Search className="w-[35px] h-[35px] cursor-pointer" onClick={()=>document.getElementById('weather_model').showModal()} />
         </header>
         <div className="current-weather flex justify-between items-center mt-8">
-          <h2 className="text-8xl font-teko font-bold">{currentWeather.main.temp}&deg;</h2>
+          <h2 className="text-8xl font-teko font-bold">{Math.round((currentWeather?.main.temp ?? 0) * 9/5 + 32)}&deg;F</h2>
           {/* <WindIcon size="h-auto max-w-24 w-full" /> */}
-          <img className="h-auto max-w-24 w-full" src="https://openweathermap.org/img/wn/04d@2x.png" alt="weather icon" />
+          <img className="h-auto max-w-24 w-full" src={`https://openweathermap.org/img/wn/${currentWeather?.weather[0].icon}@2x.png`} alt="weather icon" />
         </div>
         <div className="current-weather-conditions bg-solid-black rounded-[10px] mt-5">
           <div className="flex flex-col justify-between items-center gap-[0.5rem]">
             <WindIcon size="w-6 h-6"/>
-            <span className="wind-speed">{currentWeather.wind.speed} km/s</span>
+            <span className="wind-speed">{currentWeather?.wind.speed} km/s</span>
             <p className="font-montserrat text-[1em] text-mid-gray">Wind</p>
           </div>
           <div className="flex flex-col justify-between items-center gap-[0.5rem]">
             <HumidityIcon size="w-6 h-6"/>
-            <span className="wind-speed">{currentWeather.main.humidity}</span>
+            <span className="wind-speed">{currentWeather?.main.humidity}</span>
             <p className="font-montserrat text-[1em] text-mid-gray">Humidity</p>
           </div>
           <div className="flex flex-col justify-between items-center gap-[0.5rem]">
             <Umbrella className="w-6 h-6"/>
-            <span className="wind-speed">{currentWeather.main.pressure}%</span>
+            <span className="wind-speed">{currentWeather?.main.pressure}%</span>
             <p className="font-montserrat text-[1em] text-mid-gray">Precipitation</p>
           </div>
         </div>
         <div className="weekly-forecast">
-          {weeklyForecast?.map((forecast) => (
-              <div className="data flex flex-col items-center gap-[0.5rem]">
-                <p className="font-montserrat text-[1em]">Mon</p>
-                {/* <WindIcon size="w-8 h-8" />
-                <CloudSnow className="w-8 h-8" /> */}
-              {forecast.weather[0].map((weatherIcon: string) => (
-                <img className="w-8 h-8" src={`https://openweathermap.org/img/wn/${weatherIcon.icon}@2x.png`} alt="weather icon" />
-              ))}
+          {weeklyForecast?.slice(0, 7).map((forecast, idx) => (
+              <div key={idx} className="data flex flex-col items-center gap-[0.5rem]">
+                <p className="font-montserrat text-[1em]">{new Date(forecast.dt_txt).toLocaleDateString('en-US', { weekday: 'short' })}</p>
+                <img className="w-8 h-8" src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`} alt="weather icon" />
                 <div className="flex gap-[0.15rem] pb-[1rem]">
-                  <span day-temp-min="">{currentWeather.main.temp_min}&deg;</span> | <span day-temp-max="">{currentWeather.main.temp_max}&deg;</span>
+                <span day-temp-min={forecast.main.temp_min}>{((forecast?.main.temp_min ?? 0) * 9/5 + 32).toFixed(1)}&deg;F</span> | <span day-temp-max={forecast.main.temp_max}>{((forecast?.main.temp_max ?? 0) * 9/5 + 32).toFixed(1)}&deg;F</span>
                 </div>
               </div>
           ))}
-          {/* <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Tue</p>
-            <CloudSnow className="w-8 h-8"/>
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">6&deg;</span> | <span day-temp-max="">13&deg;</span>
-            </div>
-          </div>
-          <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Wed</p>
-            <WindIcon size="w-8 h-8" />
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">7&deg;</span> | <span day-temp-max="">11&deg;</span>
-            </div>
-          </div>
-          <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Thu</p>
-            <CloudRain className="w-8 h-8"/>
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">8&deg;</span> | <span day-temp-max="">12&deg;</span>
-            </div>
-          </div>
-          <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Fri</p>
-            <Sun className="w-8 h-8"/>
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">3&deg;</span> | <span day-temp-max="">9&deg;</span>
-            </div>
-          </div>
-          <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Sat</p>
-            <Snowflake className="w-8 h-8"/>
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">4&deg;</span> | <span day-temp-max="">10&deg;</span>
-            </div>
-          </div>
-          <div className="data flex flex-col items-center gap-[0.5rem]">
-            <p className="font-montserrat text-[1em]">Sun</p>
-            <CloudHail className="w-8 h-8"/>
-            <div className="flex gap-[0.15rem] pb-[1rem]">
-              <span day-temp-min="">7&deg;</span> | <span day-temp-max="">11&deg;</span>
-            </div>
-          </div> */}
         </div>
       </div>
       <dialog id="weather_model" className="modal modal-bottom sm:modal-middle">
